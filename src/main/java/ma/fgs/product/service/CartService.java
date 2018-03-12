@@ -2,6 +2,7 @@ package ma.fgs.product.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import ma.fgs.product.domain.Cart;
 import ma.fgs.product.domain.CartProduct;
 import ma.fgs.product.domain.User;
 import ma.fgs.product.domain.dto.CartDto;
+import ma.fgs.product.repository.CartProductRepository;
 import ma.fgs.product.repository.CartRepository;
 import ma.fgs.product.repository.UserRepository;
 import ma.fgs.product.service.api.ICartService;
@@ -22,7 +24,7 @@ public class CartService implements ICartService {
 	private CartRepository repo;
 
 	@Autowired
-	private CartProductService cartProductService;
+	private CartProductRepository cartProductRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -84,7 +86,7 @@ public class CartService implements ICartService {
 	}
 
 	@Override
-	public Cart removeFromCart(CartDto dto) throws NotFoundException {
+	public Cart minusProductFromCart(CartDto dto) throws NotFoundException {
 		Cart cart = repo.findByUserAccountUsername(dto.getUsername());
 
 		if (cart != null) {
@@ -95,11 +97,7 @@ public class CartService implements ICartService {
 					if (cartProduct.getQuantity() > 1)
 						cartProduct.setQuantity(cartProduct.getQuantity() - 1);
 					else {
-						try {
-							cartProductService.deleteCartProduct(cartProduct.getId());
-						} catch (NotFoundException e) {
-							e.printStackTrace();
-						}
+						cartProductRepository.delete(cartProduct.getId());
 					}
 				}
 			});
@@ -140,6 +138,27 @@ public class CartService implements ICartService {
 	public List<Cart> searchCarts(Cart cartDto) throws NotFoundException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void deleteProductFromCart(Long productid, String username) {
+		Cart target = repo.findByUserAccountUsername(username);
+		List<CartProduct> cartProducts = target.getProducts();
+//		if (!cartProducts.isEmpty())
+//			for (CartProduct cp : cartProducts) {
+//				if (cp.getProduct() != null && cp.getProduct().getId() == productid) {
+//					cartProductRepository.delete(cp);
+//				}
+//			}
+		
+		if(!cartProducts.isEmpty()) {
+			Optional<CartProduct> match = cartProducts.stream()
+				.filter(cp -> (cp.getProduct().getId() == productid))
+				.findFirst();
+			cartProductRepository.delete(match.get());
+		}
+		target.setProducts(cartProducts);
+		repo.save(target);
 	}
 
 }

@@ -10,7 +10,7 @@ public interface ICartService {
 
 	Cart addToCart(CartDto cart);
 	
-	Cart removeFromCart(CartDto cart) throws NotFoundException;
+	Cart minusProductFromCart(CartDto cart) throws NotFoundException;
 
 	Cart findCart(long id) throws NotFoundException;
 
@@ -21,5 +21,7 @@ public interface ICartService {
 	List<Cart> searchCarts(Cart cartDto) throws NotFoundException;
 
 	Cart findByUserId(Long userId) throws NotFoundException;
+
+	void deleteProductFromCart(Long productid, String username);
 
 }

@@ -20,7 +20,6 @@ public class CartProductService implements ICartProductService {
 			throw new NotFoundException("NOT.FOUND", "Cart product not found");
  		CartProduct cp = cartProductRepo.findOne(id);
 		cartProductRepo.delete(cp);
- 		CartProduct cp2 = cartProductRepo.findOne(id);		
 	}
 	
 }

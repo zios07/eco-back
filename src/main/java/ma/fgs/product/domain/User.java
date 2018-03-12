@@ -1,6 +1,7 @@
 package ma.fgs.product.domain;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,31 +11,33 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class User {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String email;
-	
+
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private LocalDate bDate;
 
 	@OneToOne
 	private Account account;
-	
+
 	@ManyToOne
 	private Role role;
 
-	
+	private byte[] photo;
+
 	public User() {
 		super();
 	}
 
-	public User(Long id, String email, String firstName, String lastName, LocalDate bDate,  Account account, Role role) {
+	public User(Long id, String email, String firstName, String lastName, LocalDate bDate, Account account, Role role,
+			byte[] photo) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -43,6 +46,7 @@ public class User {
 		this.bDate = bDate;
 		this.account = account;
 		this.role = role;
+		this.photo = photo;
 	}
 
 	public Long getId() {
@@ -62,7 +66,7 @@ public class User {
 	}
 
 	public String getFirstName() {
-		return firstName; 
+		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -100,5 +104,20 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", bDate=" + bDate + ", account=" + account + ", role=" + role + ", photo=" + Arrays.toString(photo)
+				+ "]";
+	}
+
 }

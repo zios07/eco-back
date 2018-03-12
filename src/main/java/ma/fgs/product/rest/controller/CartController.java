@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ma.fgs.product.domain.Cart;
@@ -31,14 +32,19 @@ public class CartController {
 		return service.findAllCarts();
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value="/add")
+	@RequestMapping(method = RequestMethod.PUT, value = "product/add")
 	public Cart addToCart(@RequestBody CartDto dto) {
 		return service.addToCart(dto);
 	}
-	
-	@RequestMapping(method = RequestMethod.PUT, value="/remove")
-	public Cart removeFromCart(@RequestBody CartDto dto) throws NotFoundException {
-		return service.removeFromCart(dto);
+
+	@RequestMapping(method = RequestMethod.PUT, value = "product/minus")
+	public Cart minusProductFromCart(@RequestBody CartDto dto) throws NotFoundException {
+		return service.minusProductFromCart(dto);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "product/delete")
+	public void deleteProductFromCart(@RequestParam Long productid, @RequestParam String username) {
+		service.deleteProductFromCart(productid, username);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
@@ -50,5 +56,5 @@ public class CartController {
 	public Cart findByUserId(@PathVariable Long userId) throws NotFoundException {
 		return service.findByUserId(userId);
 	}
-	
+
 }

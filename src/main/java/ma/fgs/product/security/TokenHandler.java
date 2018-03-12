@@ -1,7 +1,9 @@
 package ma.fgs.product.security;
 
+import static ma.fgs.product.security.utils.SecurityConstants.EXPIRATION_TIME;
+import static ma.fgs.product.security.utils.SecurityConstants.SECRET;
+
 import java.util.Date;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +17,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenHandler {
 
 	final long EXPIRATIONTIME = 10 * 24 * 60 * 60 * 1000; // 10 days
-	final String SECRET = "ThisIsASecret"; // private key, better read it from an external file
+	//	final String SECRET = "ThisIsASecret"; 
+	// private key, better read it from an external file
 
 	final public String TOKEN_PREFIX = "Bearer"; // the prefix of the token in the http header
 	final public String HEADER_STRING = "Authorization"; // the http header containing the prexif + the token
@@ -33,15 +36,11 @@ public class TokenHandler {
 	 */
 	public String build(String username) {
 
-		Date now = new Date();
-
-		String JWT = Jwts.builder().setId(UUID.randomUUID().toString()).setSubject(username).setIssuedAt(now)
-				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
-				// .compressWith(CompressionCodecs.DEFLATE) // uncomment to enable token
-				// compression
-				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
-
-		return JWT;
+		return Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
+                .compact();
 
 	}
 
