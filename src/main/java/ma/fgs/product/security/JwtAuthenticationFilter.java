@@ -27,36 +27,33 @@ import ma.fgs.product.domain.Account;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
-        try {
-            Account creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), Account.class);
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
+			throws AuthenticationException {
+		try {
+			if (req.getMethod().equalsIgnoreCase("OPTIONS"))
+				return null;
 
-            return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getUsername(),
-                            creds.getPassword(),
-                            Collections.emptyList())
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    } 
+			Account creds = new ObjectMapper().readValue(req.getInputStream(), Account.class);
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getUsername(),
+					creds.getPassword(), Collections.emptyList()));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-        String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
-                .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-    }
+	@Override
+	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
+			Authentication auth) throws IOException, ServletException {
+
+		String token = Jwts.builder().setSubject(((User) auth.getPrincipal()).getUsername())
+				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, SECRET.getBytes()).compact();
+		res.getWriter().write(token);
+		res.getWriter().flush();
+		res.getWriter().close();
+		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+	}
 
 }
