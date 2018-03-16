@@ -20,7 +20,9 @@ public class Product {
 	
 	private Double price;
 
-	private static int qteStock;
+	private int qteStock;
+
+	private String imgUrl;
 
 	@ManyToOne
 	private Brand brand;
@@ -28,7 +30,7 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(Long id, String code, String label, double price, Brand brand, String description) {
+	public Product(Long id, String code, String label, double price, Brand brand, String description, int qteStock, String imgUrl) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -36,6 +38,8 @@ public class Product {
 		this.description = description;
 		this.price = price;
 		this.brand = brand;
+		this.qteStock = qteStock;
+		this.imgUrl = imgUrl;
 	}
 
 	public Long getId() {
@@ -79,12 +83,12 @@ public class Product {
 		return price;
 	}
 
-	public static int getQteStock() {
+	public int getQteStock() {
 		return qteStock;
 	}
 
-	public static void setQteStock(int qteStock) {
-		Product.qteStock = qteStock;
+	public void setQteStock(int qteStock) {
+		this.qteStock = qteStock;
 	}
 
 	public Brand getBrand() {
@@ -93,6 +97,14 @@ public class Product {
 
 	public void setBrand(Brand brand) {
 		this.brand = brand;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class User {
 	@OneToOne
 	private Account account;
 
+	// todo: ManyToMany ?
 	@ManyToOne
 	private Role role;
 
