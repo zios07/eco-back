@@ -2,10 +2,13 @@ package ma.fgs.product.security;
 
 import static ma.fgs.product.security.utils.SecurityConstants.EXPIRATION_TIME;
 import static ma.fgs.product.security.utils.SecurityConstants.SECRET;
+import static ma.fgs.product.security.utils.SecurityConstants.TOKEN_PREFIX;
+import static ma.fgs.product.service.utils.UtilContants.ROLE_CLAIM;
 
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +18,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class TokenHandler {
-
-	//final long EXPIRATIONTIME = 10 * 24 * 60 * 60 * 1000; // 10 days
+	
 	final long EXPIRATIONTIME = 5 * 60 * 1000;// 10 days
-	//	final String SECRET = "ThisIsASecret"; 
-	// private key, better read it from an external file
-
-	final public String TOKEN_PREFIX = "Bearer"; // the prefix of the token in the http header
-	final public String HEADER_STRING = "Authorization"; // the http header containing the prexif + the token
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -36,9 +33,12 @@ public class TokenHandler {
 	 * @return The generated token.
 	 */
 	public String build(String username) {
-
+		UserDetails user = userDetailsService.loadUserByUsername(username);
+		String role = user.getAuthorities().iterator().next().getAuthority();
+		
 		return Jwts.builder()
                 .setSubject(username)
+                .claim(ROLE_CLAIM, role)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();

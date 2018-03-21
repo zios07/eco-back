@@ -23,6 +23,8 @@ import ma.fgs.product.security.JwtAuthenticationFilter;
 import ma.fgs.product.security.JwtAuthorizationFilter;
 import ma.fgs.product.security.utils.UserDetailsServiceImpl;
 import ma.fgs.product.service.AccountService;
+import ma.fgs.product.service.UserService;
+import ma.fgs.product.service.api.IUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -50,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public UserDetailsService userDetailsServiceBean() throws Exception {
-		return new UserDetailsServiceImpl(accountService());
+		return new UserDetailsServiceImpl(userService());
 	}
 
 	@Bean
@@ -64,6 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AccountService accountService() {
 		return new AccountService();
+	}
+	
+	@Bean
+	public IUserService userService() {
+		return new UserService();
 	}
 
 	@Bean
