@@ -26,11 +26,12 @@ public class AuthenticationController {
 	@PostMapping(value = "authenticate")
 	public ResponseEntity<ResponseToken> authenticate(@RequestBody Account accountCredentiels)
 			throws NotFoundException, BadCredentialsException {
-		Account account = service.authenticate(accountCredentiels);
-		ResponseToken token = null;
-		if (account != null)
-			token = new ResponseToken((handler.build(account.getUsername())));
-		return new ResponseEntity<ResponseToken>(token, HttpStatus.OK);
+//		Account account = service.authenticate(accountCredentiels);
+//		ResponseToken token = null;
+//		if (account != null)
+//			token = new ResponseToken((handler.build(account.getUsername())));
+//		return new ResponseEntity<ResponseToken>(token, HttpStatus.OK);
+		return null;
 	}
 
 }

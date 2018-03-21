@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import ma.fgs.product.domain.Cart;
 import ma.fgs.product.domain.CartProduct;
@@ -19,7 +18,6 @@ import ma.fgs.product.service.api.ICartService;
 import ma.fgs.product.service.exception.NotFoundException;
 
 @Service
-@Transactional
 public class CartService implements ICartService {
 
 	@Autowired
@@ -147,15 +145,13 @@ public class CartService implements ICartService {
 		Cart target = repo.findByUserAccountUsername(username);
 		List<CartProduct> cartProducts = target.getProducts();
 		
-		CartProduct p = null;
-		
 		if(!cartProducts.isEmpty()) {
 			Optional<CartProduct> match = cartProducts.stream()
 				.filter(cp -> (cp.getProduct().getId() == productid))
 				.findFirst();
-			p = match.get();
+			target.getProducts().set(cartProducts.indexOf(match.get()), null);
 		}
-		cartProductRepository.delete(p);
+		repo.save(target);
 	}
 
 }

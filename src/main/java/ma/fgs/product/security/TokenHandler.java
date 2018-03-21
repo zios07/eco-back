@@ -16,7 +16,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class TokenHandler {
 
-	final long EXPIRATIONTIME = 10 * 24 * 60 * 60 * 1000; // 10 days
+	//final long EXPIRATIONTIME = 10 * 24 * 60 * 60 * 1000; // 10 days
+	final long EXPIRATIONTIME = 5 * 60 * 1000;// 10 days
 	//	final String SECRET = "ThisIsASecret"; 
 	// private key, better read it from an external file
 
