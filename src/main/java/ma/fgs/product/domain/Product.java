@@ -23,6 +23,8 @@ public class Product {
 	private int qteStock;
 
 	private String imgUrl;
+	
+	private int qteCart;
 
 	@ManyToOne
 	private Brand brand;
@@ -30,7 +32,7 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(Long id, String code, String label, double price, Brand brand, String description, int qteStock, String imgUrl) {
+	public Product(Long id, String code, String label, double price, Brand brand, String description, int qteStock, String imgUrl, int qteCart) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -40,6 +42,7 @@ public class Product {
 		this.brand = brand;
 		this.qteStock = qteStock;
 		this.imgUrl = imgUrl;
+		this.qteCart= qteCart;
 	}
 
 	public Long getId() {
@@ -106,6 +109,16 @@ public class Product {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
+	
+	
+
+	public int getQteCart() {
+		return qteCart;
+	}
+
+	public void setQteCart(int qteCart) {
+		this.qteCart = qteCart;
+	}
 
 	@Override
 	public int hashCode() {
@@ -115,8 +128,11 @@ public class Product {
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((imgUrl == null) ? 0 : imgUrl.hashCode());
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result + qteCart;
+		result = prime * result + qteStock;
 		return result;
 	}
 
@@ -149,6 +165,11 @@ public class Product {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (imgUrl == null) {
+			if (other.imgUrl != null)
+				return false;
+		} else if (!imgUrl.equals(other.imgUrl))
+			return false;
 		if (label == null) {
 			if (other.label != null)
 				return false;
@@ -158,6 +179,10 @@ public class Product {
 			if (other.price != null)
 				return false;
 		} else if (!price.equals(other.price))
+			return false;
+		if (qteCart != other.qteCart)
+			return false;
+		if (qteStock != other.qteStock)
 			return false;
 		return true;
 	}
