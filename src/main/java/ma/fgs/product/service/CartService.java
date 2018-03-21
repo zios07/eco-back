@@ -144,21 +144,23 @@ public class CartService implements ICartService {
 	public void deleteProductFromCart(Long productid, String username) {
 		Cart target = repo.findByUserAccountUsername(username);
 		List<CartProduct> cartProducts = target.getProducts();
-//		if (!cartProducts.isEmpty())
-//			for (CartProduct cp : cartProducts) {
-//				if (cp.getProduct() != null && cp.getProduct().getId() == productid) {
-//					cartProductRepository.delete(cp);
-//				}
-//			}
 		
 		if(!cartProducts.isEmpty()) {
 			Optional<CartProduct> match = cartProducts.stream()
 				.filter(cp -> (cp.getProduct().getId() == productid))
 				.findFirst();
-			cartProductRepository.delete(match.get());
+			target.getProducts().set(cartProducts.indexOf(match.get()), null);
 		}
-		target.setProducts(cartProducts);
 		repo.save(target);
+	}
+
+	@Override
+	public Cart findByUsername(String username) throws NotFoundException {
+		Cart cart = repo.findByUserAccountUsername(username);
+		if(cart == null) {
+			throw new NotFoundException("USER.CART.NOT.FOUND", "No cart found for user with username: " + username);
+		}
+		return cart;
 	}
 
 }

@@ -115,8 +115,10 @@ public class Product {
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((imgUrl == null) ? 0 : imgUrl.hashCode());
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result + qteStock;
 		return result;
 	}
 
@@ -149,6 +151,11 @@ public class Product {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (imgUrl == null) {
+			if (other.imgUrl != null)
+				return false;
+		} else if (!imgUrl.equals(other.imgUrl))
+			return false;
 		if (label == null) {
 			if (other.label != null)
 				return false;
@@ -158,6 +165,8 @@ public class Product {
 			if (other.price != null)
 				return false;
 		} else if (!price.equals(other.price))
+			return false;
+		if (qteStock != other.qteStock)
 			return false;
 		return true;
 	}

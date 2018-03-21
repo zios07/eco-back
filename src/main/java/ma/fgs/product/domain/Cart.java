@@ -22,7 +22,7 @@ public class Cart {
 
 	// Add quantity of products in cart
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable( name = "CART_CART_PRODUCT", 
 				joinColumns = @JoinColumn(name = "CART_ID"), 
 				inverseJoinColumns = @JoinColumn(name = "CART_PRODUCT_ID"))

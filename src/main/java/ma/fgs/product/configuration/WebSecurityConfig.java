@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,6 +23,8 @@ import ma.fgs.product.security.JwtAuthenticationFilter;
 import ma.fgs.product.security.JwtAuthorizationFilter;
 import ma.fgs.product.security.utils.UserDetailsServiceImpl;
 import ma.fgs.product.service.AccountService;
+import ma.fgs.product.service.UserService;
+import ma.fgs.product.service.api.IUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -39,13 +42,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		auth.userDetailsService(userDetailsServiceBean());
+		// the user details service and the password encoder to be user in the
+		// authenticated() method of authenticationManager of the JwtAuthication Filter
+
+		auth.userDetailsService(userDetailsServiceBean())
+		 .passwordEncoder(passwordEncoder());
 
 	}
 
 	@Override
 	public UserDetailsService userDetailsServiceBean() throws Exception {
-		return new UserDetailsServiceImpl(accountService());
+		return new UserDetailsServiceImpl(userService());
 	}
 
 	@Bean
@@ -60,6 +67,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AccountService accountService() {
 		return new AccountService();
 	}
+	
+	@Bean
+	public IUserService userService() {
+		return new UserService();
+	}
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
@@ -71,6 +83,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
+	}
+
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }

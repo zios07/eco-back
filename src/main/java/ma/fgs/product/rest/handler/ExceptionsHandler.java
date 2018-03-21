@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import ma.fgs.product.service.exception.BadCredentialsException;
+import ma.fgs.product.service.exception.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionsHandler {
@@ -15,6 +16,13 @@ public class ExceptionsHandler {
 	@ExceptionHandler(value = BadCredentialsException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ResponseError handleBadCredentials(BadCredentialsException ex) {
+		return new ResponseError(ex.getCode(), ex.getMessage());
+	}
+	
+	@ResponseBody
+	@ExceptionHandler(value = NotFoundException.class)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public ResponseError handleNotFound(NotFoundException ex) {
 		return new ResponseError(ex.getCode(), ex.getMessage());
 	}
 	

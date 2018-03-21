@@ -1,12 +1,6 @@
 server:
   port: 9095
 
-jwt:
-  header: Authentication
-  expires_in: 86400
-  secret: zios07
-
-
 spring:
   datasource: 
     driver-class-name: com.mysql.jdbc.Driver

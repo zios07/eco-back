@@ -52,9 +52,9 @@ public class CartController {
 		service.deleteCart(id);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
-	public Cart findByUserId(@PathVariable Long userId) throws NotFoundException {
-		return service.findByUserId(userId);
+	@RequestMapping(method = RequestMethod.GET, value = "/user/{username}")
+	public Cart findByUsername(@PathVariable String username) throws NotFoundException {
+		return service.findByUsername(username);
 	}
 
 }
