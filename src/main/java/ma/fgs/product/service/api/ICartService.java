@@ -24,4 +24,6 @@ public interface ICartService {
 
 	void deleteProductFromCart(Long productid, String username);
 
+	Cart findByUsername(String username) throws NotFoundException;
+
 }

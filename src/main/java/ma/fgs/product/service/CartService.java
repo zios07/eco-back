@@ -154,4 +154,13 @@ public class CartService implements ICartService {
 		repo.save(target);
 	}
 
+	@Override
+	public Cart findByUsername(String username) throws NotFoundException {
+		Cart cart = repo.findByUserAccountUsername(username);
+		if(cart == null) {
+			throw new NotFoundException("USER.CART.NOT.FOUND", "No cart found for user with username: " + username);
+		}
+		return cart;
+	}
+
 }
