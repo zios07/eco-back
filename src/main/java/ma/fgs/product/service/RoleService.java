@@ -1,5 +1,7 @@
 package ma.fgs.product.service;
 
+import static ma.fgs.product.service.utils.UtilContants.*;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,16 @@ public class RoleService implements IRoleService {
 	public List<Role> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Role getRoleUser() {
+		return repo.findByRoleCode(ROLE_CODE_USER);
+	}
+
+	@Override
+	public Role getRoleAdmin() {
+		return repo.findByRoleCode(ROLE_CODE_ADMIN);
 	}
 
 }

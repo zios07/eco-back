@@ -3,11 +3,14 @@ package ma.fgs.product.domain;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class User {
@@ -22,9 +25,10 @@ public class User {
 
 	private String lastName;
 
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate bDate;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Account account;
 
 	// todo: ManyToMany ?

@@ -3,7 +3,6 @@ package ma.fgs.product.security;
 import static ma.fgs.product.security.utils.SecurityConstants.EXPIRATION_TIME;
 import static ma.fgs.product.security.utils.SecurityConstants.SECRET;
 import static ma.fgs.product.security.utils.SecurityConstants.TOKEN_PREFIX;
-import static ma.fgs.product.service.utils.UtilContants.ROLE_CLAIM;
 
 import java.util.Date;
 
@@ -35,10 +34,13 @@ public class TokenHandler {
 	public String build(String username) {
 		UserDetails user = userDetailsService.loadUserByUsername(username);
 		String role = user.getAuthorities().iterator().next().getAuthority();
-		
+
+		Claims claims = Jwts.claims();
+        claims.put("role", role);
+
 		return Jwts.builder()
                 .setSubject(username)
-                .claim(ROLE_CLAIM, role)
+                .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();

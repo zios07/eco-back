@@ -1,6 +1,7 @@
 package ma.fgs.product.configuration;
 
 import static ma.fgs.product.security.utils.SecurityConstants.LOGIN_URL;
+import static ma.fgs.product.security.utils.SecurityConstants.REGISTRATION_URL;
 
 import java.util.Arrays;
 
@@ -33,10 +34,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and().authorizeRequests().antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
-				.antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated().and()
-				.addFilter(jwtAuthenticationFilter()).addFilter(new JwtAuthorizationFilter(authenticationManager()));
+		http.cors()
+			.and()
+				.csrf()
+					.disable()
+				.sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+				.authorizeRequests()
+					.antMatchers(HttpMethod.POST, LOGIN_URL, REGISTRATION_URL)
+						.permitAll()
+					.antMatchers(HttpMethod.OPTIONS)
+						.permitAll()
+					.anyRequest()
+						.authenticated()
+			.and()
+				.addFilter(jwtAuthenticationFilter())
+				.addFilter(new JwtAuthorizationFilter(authenticationManager()));
 	}
 
 	@Override
