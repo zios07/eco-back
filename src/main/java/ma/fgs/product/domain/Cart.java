@@ -20,8 +20,6 @@ public class Cart {
 	@GeneratedValue
 	private Long id;
 
-	// Add quantity of products in cart
-	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable( name = "CART_CART_PRODUCT", 
 				joinColumns = @JoinColumn(name = "CART_ID"), 
@@ -119,6 +117,11 @@ public class Cart {
 		} else if (!user.equals(other.user))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", products=" + products + ", user=" + user + ", totalPrice=" + totalPrice + "]";
 	}
 	
 }

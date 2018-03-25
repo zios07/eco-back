@@ -1,6 +1,7 @@
 package ma.fgs.product.service;
 
-import static ma.fgs.product.service.utils.UtilContants.*;
+import static ma.fgs.product.service.utils.UtilContants.ROLE_CODE_ADMIN;
+import static ma.fgs.product.service.utils.UtilContants.ROLE_CODE_USER;
 
 import java.util.List;
 
@@ -34,14 +35,12 @@ public class RoleService implements IRoleService {
 
 	@Override
 	public Role findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findOne(id);
 	}
 
 	@Override
 	public List<Role> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findAll();
 	}
 
 	@Override

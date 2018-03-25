@@ -1,6 +1,8 @@
 package ma.fgs.product.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,7 +31,7 @@ public class UserService implements IUserService {
 	public User addUser(User user) {
 		Role role = roleService.getRoleUser();
 		user.setRole(role);
-		if (user.getAccount() != null) {
+		if (user.getAccount() != null && user.getRole() != null) {
 			user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
 		}
 		return repo.save(user);
@@ -44,7 +46,13 @@ public class UserService implements IUserService {
 
 	@Override
 	public List<User> findAllUsers() {
-		return repo.findAll();
+		List<User> users = repo.findAll();
+		users.stream().filter(user -> Objects.nonNull(user.getAccount()))
+		.collect(Collectors.toList())
+		.forEach(user -> {
+			user.getAccount().setPassword(null);
+		});
+		return users;
 	}
 
 	@Override
