@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,25 +18,20 @@ public class Cart {
 	@Id
 	@GeneratedValue
 	private Long id;
-
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable( name = "CART_CART_PRODUCT", 
 				joinColumns = @JoinColumn(name = "CART_ID"), 
 				inverseJoinColumns = @JoinColumn(name = "CART_PRODUCT_ID"))
 	private List<CartProduct> products;
-	
-	@OneToOne
-	@JoinColumn(name = "USER_ID", unique = true)
-	private User user;
 
 	private Double totalPrice;
 
-	public Cart(Long id, List<CartProduct> products, Double totalPrice, User user) {
+	public Cart(Long id, List<CartProduct> products, Double totalPrice) {
 		super();
 		this.id = id;
 		this.products = products;
 		this.totalPrice = totalPrice;
-		this.user = user;
 	}
 
 	public Cart() {
@@ -68,12 +62,9 @@ public class Cart {
 		this.totalPrice = totalPrice;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", products=" + products + ", totalPrice=" + totalPrice + "]";
 	}
 
 	@Override
@@ -83,7 +74,6 @@ public class Cart {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		result = prime * result + ((totalPrice == null) ? 0 : totalPrice.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -111,17 +101,7 @@ public class Cart {
 				return false;
 		} else if (!totalPrice.equals(other.totalPrice))
 			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Cart [id=" + id + ", products=" + products + ", user=" + user + ", totalPrice=" + totalPrice + "]";
-	}
-	
 }
