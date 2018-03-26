@@ -3,11 +3,15 @@ package ma.fgs.product.domain;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class User {
@@ -22,14 +26,18 @@ public class User {
 
 	private String lastName;
 
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate bDate;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Account account;
 
-	// todo: ManyToMany ?
 	@ManyToOne
 	private Role role;
+	
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "CART_ID")
+	private Cart cart;
 
 	private byte[] photo;
 
@@ -38,7 +46,7 @@ public class User {
 	}
 
 	public User(Long id, String email, String firstName, String lastName, LocalDate bDate, Account account, Role role,
-			byte[] photo) {
+			byte[] photo, Cart cart) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -48,6 +56,7 @@ public class User {
 		this.account = account;
 		this.role = role;
 		this.photo = photo;
+		this.cart = cart;
 	}
 
 	public Long getId() {
@@ -114,11 +123,19 @@ public class User {
 		this.photo = photo;
 	}
 
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", bDate=" + bDate + ", account=" + account + ", role=" + role + ", photo=" + Arrays.toString(photo)
-				+ "]";
+				+ ", bDate=" + bDate + ", account=" + account + ", role=" + role + ", cart=" + cart + ", photo="
+				+ Arrays.toString(photo) + "]";
 	}
 
 }
