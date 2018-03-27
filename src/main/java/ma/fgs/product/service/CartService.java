@@ -36,7 +36,8 @@ public class CartService implements ICartService {
 
 		double totalPrice = 0;
 		foundProduct = false;
-		Cart cart = repo.findByUserAccountUsername(dto.getUsername());
+
+		Cart cart = getUserCart(dto.getUsername());
 
 		if (cart != null) {
 			List<CartProduct> cartProducts = cart.getProducts();
@@ -67,8 +68,6 @@ public class CartService implements ICartService {
 		} else {
 
 			cart = new Cart();
-			String username = dto.getUsername();
-			User user = userRepository.findByAccountUsername(username);
 
 			List<CartProduct> products = new ArrayList<>();
 			CartProduct cartProduct = new CartProduct();
@@ -78,7 +77,6 @@ public class CartService implements ICartService {
 
 			totalPrice = products.get(0).getProduct().getPrice();
 
-			cart.setUser(user);
 			cart.setProducts(products);
 			cart.setTotalPrice(totalPrice);
 			return repo.save(cart);
@@ -87,7 +85,11 @@ public class CartService implements ICartService {
 
 	@Override
 	public Cart minusProductFromCart(CartDto dto) throws NotFoundException {
-		Cart cart = repo.findByUserAccountUsername(dto.getUsername());
+		User user = userRepository.findByAccountUsername(dto.getUsername());
+		Cart cart = null;
+		if (user != null) {
+			cart = user.getCart();
+		}
 
 		if (cart != null) {
 			List<CartProduct> cartProducts = new ArrayList<>(cart.getProducts());
@@ -128,7 +130,7 @@ public class CartService implements ICartService {
 
 	@Override
 	public Cart findByUserId(Long userId) throws NotFoundException {
-		Cart cart = repo.findByUserId(userId);
+		Cart cart = getUserCart(userId);
 		if (cart == null)
 			throw new NotFoundException("USER.CART.NOT.FOUND", "No cart found for user with id: " + userId);
 		return cart;
@@ -142,13 +144,11 @@ public class CartService implements ICartService {
 
 	@Override
 	public void deleteProductFromCart(Long productid, String username) {
-		Cart target = repo.findByUserAccountUsername(username);
+		Cart target = getUserCart(username);
 		List<CartProduct> cartProducts = target.getProducts();
-		
-		if(!cartProducts.isEmpty()) {
-			Optional<CartProduct> match = cartProducts.stream()
-				.filter(cp -> (cp.getProduct().getId() == productid))
-				.findFirst();
+		if (!cartProducts.isEmpty()) {
+			Optional<CartProduct> match = cartProducts.stream().filter(cp -> (cp.getProduct().getId() == productid))
+					.findFirst();
 			target.getProducts().set(cartProducts.indexOf(match.get()), null);
 		}
 		repo.save(target);
@@ -156,9 +156,27 @@ public class CartService implements ICartService {
 
 	@Override
 	public Cart findByUsername(String username) throws NotFoundException {
-		Cart cart = repo.findByUserAccountUsername(username);
-		if(cart == null) {
+		Cart cart = getUserCart(username);
+		if (cart == null) {
 			throw new NotFoundException("USER.CART.NOT.FOUND", "No cart found for user with username: " + username);
+		}
+		return cart;
+	}
+
+	private Cart getUserCart(String username) {
+		User user = userRepository.findByAccountUsername(username);
+		Cart cart = null;
+		if (user != null) {
+			cart = user.getCart();
+		}
+		return cart;
+	}
+
+	private Cart getUserCart(Long id) {
+		User user = userRepository.findOne(id);
+		Cart cart = null;
+		if (user != null) {
+			cart = user.getCart();
 		}
 		return cart;
 	}

@@ -29,9 +29,11 @@ public class UserService implements IUserService {
 
 	@Override
 	public User addUser(User user) {
-		Role role = roleService.getRoleUser();
-		user.setRole(role);
-		if (user.getAccount() != null && user.getRole() != null) {
+		if( user.getRole() == null ) {
+			Role role = roleService.getRoleUser();
+			user.setRole(role);
+		}
+		if (user.getAccount() != null) {
 			user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
 		}
 		return repo.save(user);
