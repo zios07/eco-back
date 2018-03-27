@@ -29,10 +29,15 @@ public class UserService implements IUserService {
 
 	@Override
 	public User addUser(User user) {
-		if( user.getRole() == null ) {
-			Role role = roleService.getRoleUser();
-			user.setRole(role);
+		if(repo.count() == 0) {
+			user.setRole(roleService.getRoleAdmin());
+		} else {
+			if( user.getRole() == null ) {
+				Role role = roleService.getRoleUser();
+				user.setRole(role);
+			}
 		}
+		
 		if (user.getAccount() != null) {
 			user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
 		}
