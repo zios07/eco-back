@@ -3,17 +3,18 @@ server:
 
 spring:
   datasource: 
-    driver-class-name: com.mysql.jdbc.Driver
-    password: root
-    url: jdbc:mysql://localhost:3306/productService?useSSL=false
-    username: root
+    driver-class-name: org.postgresql.Driver
+    # password: root
+    # url: jdbc:mysql://localhost:3306/productService?useSSL=false
+    # username: root
   jpa:
     show-sql: true
     hibernate:  
         ddl-auto: update
     properties:
         hibernate:
-            dialect: org.hibernate.dialect.MySQL5Dialect
+            # dialect: org.hibernate.dialect.MySQL5Dialect
+            dialect: org.hibernate.dialect.PostgreSQLDialect
 
 #eureka:
 #  client:
