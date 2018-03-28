@@ -7,10 +7,10 @@ import ma.fgs.product.domain.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
-
-	Cart findByUserAccountUsername(String username);
-
-	Cart findByUserId(Long userId);
+//
+//	Cart findByUserAccountUsername(String username);
+//
+//	Cart findByUserId(Long userId);
 	
 }
 	

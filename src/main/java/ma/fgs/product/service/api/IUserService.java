@@ -7,7 +7,7 @@ import ma.fgs.product.service.exception.NotFoundException;
 
 public interface IUserService {
 	
-	User addUser(User product);
+	User addUser(User user);
 
 	User findUser(long id) throws NotFoundException;
 
@@ -15,7 +15,7 @@ public interface IUserService {
 
 	void deleteUser(long id) throws NotFoundException;
 
-	List<User> searchUsers(User productDto) throws NotFoundException;
+	List<User> searchUsers(User userDto) throws NotFoundException;
 
 	User updateUser(User user) throws NotFoundException;
 	
