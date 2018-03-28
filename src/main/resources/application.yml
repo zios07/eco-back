@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     password: ${JDBC_DATABASE_PASSWORD}
     url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
   jpa:
     show-sql: true
     hibernate:  
@@ -14,7 +14,7 @@ spring:
     properties:
         hibernate:
             # dialect: org.hibernate.dialect.MySQL5Dialect
-            dialect: org.hibernate.dialect.PostgreSQLDialect
+            dialect: org.hibernate.dialect.PostgreSQL94Dialect
 
 #eureka:
 #  client:
