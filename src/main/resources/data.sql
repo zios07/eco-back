@@ -1,0 +1,1 @@
+insert into role values (1, "ADMIN", "Administrator"), (2, "SELLER", "Seller"), (3, "USER", "User")
