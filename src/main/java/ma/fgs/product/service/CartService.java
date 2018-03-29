@@ -37,7 +37,8 @@ public class CartService implements ICartService {
 		double totalPrice = 0;
 		foundProduct = false;
 
-		Cart cart = getUserCart(dto.getUsername());
+		User user = userRepository.findByAccountUsername(dto.getUsername());
+		Cart cart = user.getCart();
 
 		if (cart != null) {
 			List<CartProduct> cartProducts = cart.getProducts();
@@ -79,7 +80,11 @@ public class CartService implements ICartService {
 
 			cart.setProducts(products);
 			cart.setTotalPrice(totalPrice);
-			return repo.save(cart);
+			
+			user.setCart(cart);
+			userRepository.save(user);
+//			return repo.save(cart);
+			return user.getCart();
 		}
 	}
 
