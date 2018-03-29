@@ -3,17 +3,12 @@ package ma.fgs.product.domain;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@Table(name = "USER_TABLE")
 public class User {
 
 	@Id
