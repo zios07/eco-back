@@ -22,7 +22,7 @@ public interface ICartService {
 
 	Cart findByUserId(Long userId) throws NotFoundException;
 
-	void deleteProductFromCart(Long productid, String username);
+	void deleteProductFromCart(String productId, String username);
 
 	Cart findByUsername(String username) throws NotFoundException;
 

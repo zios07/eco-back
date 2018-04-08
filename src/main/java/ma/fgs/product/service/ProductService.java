@@ -1,5 +1,6 @@
 package ma.fgs.product.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -15,9 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import ma.fgs.product.domain.Product;
+import ma.fgs.product.domain.ProductImage;
 import ma.fgs.product.domain.dto.ProductSearchDto;
+import ma.fgs.product.repository.ProductImageRepository;
 import ma.fgs.product.repository.ProductRepository;
 import ma.fgs.product.service.api.IProductService;
 import ma.fgs.product.service.exception.NotFoundException;
@@ -28,13 +32,16 @@ public class ProductService implements IProductService {
 	@Autowired
 	private ProductRepository repo;
 
+	@Autowired
+	private ProductImageRepository productImageRepo;
+
 	@Override
 	public Product addProduct(Product product) {
 		return repo.save(product);
 	}
 
 	@Override
-	public Product findProduct(long id) throws NotFoundException {
+	public Product findProduct(String id) throws NotFoundException {
 		if (!repo.exists(id))
 			throw new NotFoundException("code", "message");
 		return repo.findOne(id);
@@ -46,7 +53,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public void deleteProduct(long id) throws NotFoundException {
+	public void deleteProduct(String id) throws NotFoundException {
 		if (!repo.exists(id))
 			throw new NotFoundException("code", "message");
 		repo.delete(id);
@@ -60,7 +67,7 @@ public class ProductService implements IProductService {
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 				final Collection<Predicate> predicates = new ArrayList<>();
 				Collection<Predicate> brandPredicates = new ArrayList<>();
-				
+
 				if (!StringUtils.isEmpty(dto.getProductLabel())) {
 					Predicate predicate = cb.like(root.get("label"), "%" + dto.getProductLabel() + "%");
 					predicates.add(predicate);
@@ -87,16 +94,32 @@ public class ProductService implements IProductService {
 						return predicate;
 					}).collect(Collectors.toList());
 				}
-				
+
 				Predicate orPredicate = cb.or(brandPredicates.toArray(new Predicate[brandPredicates.size()]));
 				Predicate andPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
-				
-				if(!brandPredicates.isEmpty())
-					return cb.and(new Predicate[] {andPredicate, orPredicate});
-				return cb.and(new Predicate[] {andPredicate});
+
+				if (!brandPredicates.isEmpty())
+					return cb.and(new Predicate[] { andPredicate, orPredicate });
+				return cb.and(new Predicate[] { andPredicate });
 			}
 		}, new PageRequest(page, size));
 		return products;
+	}
+
+	@Override
+	public void uploadProductPhotos(MultipartFile[] photos, String uuid) throws IOException {
+		if (photos != null) {
+			for (MultipartFile photo : photos) {
+				ProductImage image = new ProductImage();
+				image.setContent(photo.getBytes());
+				image.setName(photo.getOriginalFilename());
+				image.setType(photo.getContentType());
+				Product product = new Product();
+				product.setId(uuid);
+				image.setProduct(product);
+				productImageRepo.save(image);
+			}
+		}
 	}
 
 }
