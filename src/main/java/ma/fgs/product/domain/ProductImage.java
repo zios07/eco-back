@@ -1,86 +1,88 @@
 package ma.fgs.product.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "PRODUCT_IMAGE")
 public class ProductImage {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+  @Id
+  @GeneratedValue
+  private Long id;
 
-	private String name;
+  private String name;
 
-	private String type;
+  private String type;
 
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	private byte[] content;
+  private boolean main;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "PRODUCT_ID")
-	private Product product;
+  @Lob
+  @Basic(fetch = FetchType.LAZY)
+  private byte[] content;
 
-	public ProductImage() {
+  @Column(nullable = false, name = "PRODUCT_ID")
+  private String productId;
 
-	}
+  public ProductImage() {
 
-	public ProductImage(Long id, String name, String type, byte[] content, Product product) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.type = type;
-		this.content = content;
-		this.product = product;
-	}
+  }
 
-	public Long getId() {
-		return id;
-	}
+  public ProductImage(Long id, String name, String type, byte[] content, String productId, boolean main) {
+    super();
+    this.id = id;
+    this.name = name;
+    this.type = type;
+    this.content = content;
+    this.productId = productId;
+    this.main = main;
+  }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getType() {
-		return type;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public String getType() {
+    return type;
+  }
 
-	public byte[] getContent() {
-		return content;
-	}
+  public void setType(String type) {
+    this.type = type;
+  }
 
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
+  public byte[] getContent() {
+    return content;
+  }
 
-	public Product getProduct() {
-		return product;
-	}
+  public void setContent(byte[] content) {
+    this.content = content;
+  }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+  public String getProductId() {
+    return productId;
+  }
 
+  public void setProductId(String productId) {
+    this.productId = productId;
+  }
+
+
+  public boolean isMain() {
+    return main;
+  }
+
+  public void setMain(boolean main) {
+    this.main = main;
+  }
 }
