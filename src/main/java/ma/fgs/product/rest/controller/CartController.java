@@ -43,7 +43,7 @@ public class CartController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "product/delete")
-	public void deleteProductFromCart(@RequestParam Long productid, @RequestParam String username) {
+	public void deleteProductFromCart(@RequestParam String productid, @RequestParam String username) {
 		service.deleteProductFromCart(productid, username);
 	}
 

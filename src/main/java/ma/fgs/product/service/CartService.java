@@ -80,10 +80,10 @@ public class CartService implements ICartService {
 
 			cart.setProducts(products);
 			cart.setTotalPrice(totalPrice);
-			
+
 			user.setCart(cart);
 			userRepository.save(user);
-//			return repo.save(cart);
+			// return repo.save(cart);
 			return user.getCart();
 		}
 	}
@@ -148,11 +148,11 @@ public class CartService implements ICartService {
 	}
 
 	@Override
-	public void deleteProductFromCart(Long productid, String username) {
+	public void deleteProductFromCart(String productId, String username) {
 		Cart target = getUserCart(username);
 		List<CartProduct> cartProducts = target.getProducts();
 		if (!cartProducts.isEmpty()) {
-			Optional<CartProduct> match = cartProducts.stream().filter(cp -> (cp.getProduct().getId() == productid))
+			Optional<CartProduct> match = cartProducts.stream().filter(cp -> (cp.getProduct().getId() == productId))
 					.findFirst();
 			target.getProducts().set(cartProducts.indexOf(match.get()), null);
 		}
