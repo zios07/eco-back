@@ -1,12 +1,5 @@
 package ma.fgs.product.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import ma.fgs.product.domain.Cart;
 import ma.fgs.product.domain.CartProduct;
 import ma.fgs.product.domain.User;
@@ -16,6 +9,12 @@ import ma.fgs.product.repository.CartRepository;
 import ma.fgs.product.repository.UserRepository;
 import ma.fgs.product.service.api.ICartService;
 import ma.fgs.product.service.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService implements ICartService {
@@ -152,7 +151,7 @@ public class CartService implements ICartService {
 		Cart target = getUserCart(username);
 		List<CartProduct> cartProducts = target.getProducts();
 		if (!cartProducts.isEmpty()) {
-			Optional<CartProduct> match = cartProducts.stream().filter(cp -> (cp.getProduct().getId() == productId))
+      Optional<CartProduct> match = cartProducts.stream().filter(cp -> (cp.getProduct().getId().equals(productId)))
 					.findFirst();
 			target.getProducts().set(cartProducts.indexOf(match.get()), null);
 		}
