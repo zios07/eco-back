@@ -6,24 +6,24 @@ import javax.persistence.Id;
 import java.util.Arrays;
 
 @Entity
-public class Brand {
+public class  Brand {
 
 	@Id @GeneratedValue
 	private Long id;
-	
+
 	private String code;
-	
+
 	private String label;
-	
+
 	private String country;
-	
+
 	private byte[] avatar;
- 
-	
+
+
 	public Brand() {
 		super();
 	}
-	
+
 	public Brand(Long id, String code, String label, String country, byte[] avatar) {
 		super();
 		this.id = id;
