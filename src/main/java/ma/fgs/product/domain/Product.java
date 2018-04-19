@@ -162,7 +162,6 @@ public class Product {
       Objects.equals(description, product.description) &&
       Objects.equals(price, product.price) &&
       Objects.equals(uuid, product.uuid) &&
-      Objects.equals(images, product.images) &&
       Objects.equals(brand, product.brand) &&
       Objects.equals(owner, product.owner);
   }
