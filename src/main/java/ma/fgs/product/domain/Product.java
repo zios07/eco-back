@@ -33,13 +33,17 @@ public class Product {
   private Brand brand;
 
   @ManyToOne
+  private Category category;
+
+  @ManyToOne
   private User owner;
 
   public Product() {
   }
 
   public Product(String id, String code, String label, double price, Brand brand,
-                 String description, int qteStock, User owner, String uuid, Set<ProductImage> images) {
+                 String description, int qteStock, User owner, String uuid, Set<ProductImage> images,
+                 Category category) {
     super();
     this.id = id;
     this.code = code;
@@ -51,6 +55,7 @@ public class Product {
     this.owner = owner;
     this.uuid = uuid;
     this.images = images;
+    this.category = category;
   }
 
   public String getId() {
@@ -134,20 +139,12 @@ public class Product {
     this.images = images;
   }
 
-  @Override
-  public String toString() {
-    return "Product{" +
-      "id='" + id + '\'' +
-      ", code='" + code + '\'' +
-      ", label='" + label + '\'' +
-      ", description='" + description + '\'' +
-      ", price=" + price +
-      ", qteStock=" + qteStock +
-      ", uuid='" + uuid + '\'' +
-      ", images=" + images +
-      ", brand=" + brand +
-      ", owner=" + owner +
-      '}';
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
   }
 
   @Override
@@ -163,12 +160,30 @@ public class Product {
       Objects.equals(price, product.price) &&
       Objects.equals(uuid, product.uuid) &&
       Objects.equals(brand, product.brand) &&
+      Objects.equals(category, product.category) &&
       Objects.equals(owner, product.owner);
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(id, code, label, description, price, qteStock, uuid, images, brand, owner);
+    return Objects.hash(id, code, label, description, price, qteStock, uuid, images, brand, category, owner);
+  }
+
+  @Override
+  public String toString() {
+    return "Product{" +
+      "id='" + id + '\'' +
+      ", code='" + code + '\'' +
+      ", label='" + label + '\'' +
+      ", description='" + description + '\'' +
+      ", price=" + price +
+      ", qteStock=" + qteStock +
+      ", uuid='" + uuid + '\'' +
+      ", images=" + images +
+      ", brand=" + brand +
+      ", category=" + category +
+      ", owner=" + owner +
+      '}';
   }
 }
