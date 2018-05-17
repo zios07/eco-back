@@ -3,6 +3,7 @@ package ma.fgs.product.domain;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,12 +39,14 @@ public class Product {
   @ManyToOne
   private User owner;
 
+  private Date addedDate;
+
   public Product() {
   }
 
   public Product(String id, String code, String label, double price, Brand brand,
                  String description, int qteStock, User owner, String uuid, Set<ProductImage> images,
-                 Category category) {
+                 Category category, Date addedDate) {
     super();
     this.id = id;
     this.code = code;
@@ -56,6 +59,7 @@ public class Product {
     this.uuid = uuid;
     this.images = images;
     this.category = category;
+    this.addedDate = addedDate;
   }
 
   public String getId() {
@@ -145,6 +149,14 @@ public class Product {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public Date getAddedDate() {
+    return addedDate;
+  }
+
+  public void setAddedDate(Date addedDate) {
+    this.addedDate = addedDate;
   }
 
   @Override
