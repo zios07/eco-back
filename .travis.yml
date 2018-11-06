@@ -1,0 +1,18 @@
+sudo: enabled
+
+language: java
+jdk: oraclejdk8
+
+stages:
+  - build
+  - test
+  - name: deploy
+    if: branch = master
+  
+jobs:
+  include:
+    - stage: build
+      script: mvn clean package -DskipTests
+    - stage: test
+      script: skip
+
