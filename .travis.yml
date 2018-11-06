@@ -1,0 +1,8 @@
+language: java
+jdk: oraclejdk8
+ 
+before_install:
+  - echo "Hello from before install"
+
+scripts:
+  - echo "executing scripts"
