@@ -13,3 +13,5 @@ package:
 build_image:
   stage: build
   script: docker build -t ece-back .
+  only:
+    - master
