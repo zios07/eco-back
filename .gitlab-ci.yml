@@ -1,0 +1,15 @@
+image: openjdk:8-alpine
+
+stages:
+  - build
+
+services:
+  - docker
+  
+package:
+  stage: build
+  script: mvn clean package -DskipTests
+
+build_image:
+  stage: build
+  script: docker build -t ece-back .

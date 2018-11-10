@@ -15,4 +15,5 @@ jobs:
       script: mvn clean package -DskipTests
     - stage: test
       script: skip
-
+    - stage: deploy
+      script: skip
