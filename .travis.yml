@@ -7,7 +7,7 @@ service:
   - docker
 
 install:
-  - skip
+  - mvn clean package -DskipTests
 
 script:
   - docker build -t eco-back .
